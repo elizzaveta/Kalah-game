@@ -79,6 +79,7 @@ class Board{
         this.stones_to_undo = [];
     }
     get_winner(){
+        if(this.houses[6]===this.houses[13])return 2;
         if(this.houses[6]>this.houses[13])return 1;
         return 0;
     }
@@ -90,10 +91,7 @@ let our_board = new Board();
 //---------------------------------------------------------------------обработка хода игрока
 function make_move(idd){
 
-
-    let chosen_house = document.getElementById(idd);
     idd = Number(idd);
-
     let chosen_stones = our_board.get_stones(idd);
 
     if(chosen_stones!== 0){
@@ -112,6 +110,7 @@ function make_move(idd){
         output.innerText = " ";
 
         ai_make_move();
+
         while(last_move===13){
             ai_make_move();
             if(check_if_the_game_is_over(2)) return;
@@ -149,7 +148,8 @@ function if_game_is_over(who_moved_last){
 
 function game_over(player_win){
     if(player_win===1)alert("Game over!\nYou won");
-    else alert("Game over!\nYou lose");
+    else if(player_win===0) alert("Game over!\nYou lose");
+    else alert("Game over!");
 
 }
 
@@ -183,6 +183,8 @@ function get_next_houses_to_put_stones(n_stones, house_index, player){
                 houses[plus]+=1;
                 last_move = plus;
             }
+        }else{
+            n_stones++;
         }
     }
     return houses;
@@ -298,7 +300,7 @@ class Ai_player{
 
     find_approximate_value(player, alpha, beta){
         let coef = 36/(this.imitate_board.houses[13]+this.imitate_board.houses[6]);
-        return Number(this.imitate_board.houses[13]*coef);
+        return (this.imitate_board.houses[13]*coef);
     }
 }
 
