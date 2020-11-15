@@ -151,6 +151,10 @@ function game_over(player_win){
     else if(player_win===0) alert("Game over!\nYou lose");
     else alert("Game over!");
 
+    let show = document.getElementById("g_over");
+    show.innerText = "Game over!"
+    show.style.backgroundColor = "#ac90b86e";
+
 }
 
 function ai_make_move(){
@@ -160,8 +164,8 @@ function ai_make_move(){
     our_board.make_move(our_board.get_stones(ai_player.kalah_move), ai_player.kalah_move,0);
     update_board();
 
-    let output = document.getElementById("who");                                                 //как-то красиво сделай
-    output.innerText += " "+ai_player.kalah_move;
+    let output = document.getElementById("who");
+    if(ai_player.kalah_move!==null)output.innerText += " "+ai_player.kalah_move;
 }
 
 
