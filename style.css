@@ -1,0 +1,77 @@
+body{
+    margin-top: 80px;
+    padding: 10px;
+    font-family: "Candara Light";
+    font-weight: bold;
+}
+.info_ai_moves>p{
+    margin: 4px;
+    margin-left: 48px;
+}
+.who{
+    height: 20px;
+}
+.field{
+    margin-left: 50px;
+    margin-right: 50px;
+    height: 400px;
+    background: tan;
+    padding: 10px;
+}
+.board{
+    background: #d5be9f;
+    padding: 10px;
+
+}
+.house_field{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 12px;
+    background: #d5be9f;
+    margin: 20px;
+}
+.top_field{
+    margin-bottom: auto;
+}
+.bottom_field{
+    margin-top: auto;
+}
+
+.center_board_div{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+.store{
+    height: 70px;
+    background: #c1ab8e;
+    margin: 20px;
+    border-radius: 40px;
+    border: solid #91816a 3px;
+    text-align: center;
+    font-size: 19px;
+    padding-top: 35px;
+}
+.play_store{
+    grid-column: 3;
+}
+.house{
+    height: 60px;
+    background: #c1ab8e;
+    border-radius: 40px;
+    border: solid #91816a 3px;
+
+    text-align: center;
+    font-size: 19px;
+    padding-top: 35px;
+}
+
+
+.bottom_field>div:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+.balls_num{
+    text-align: center;
+    font-size: 19px;
+    margin-top: 44px;
+}
