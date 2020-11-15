@@ -1,8 +1,6 @@
 let last_move= null;
-//let alpha = -Infinity;
-//let beta = Infinity;
-//
-//                                                                     состояние игровой доски
+
+//---------------------------------------------------------------------состояние игровой доски
 class Board{
     constructor() {
         this.houses = [
@@ -84,13 +82,12 @@ class Board{
         if(this.houses[6]>this.houses[13])return 1;
         return 0;
     }
-
 }
 
 
 let our_board = new Board();
 
-//                                                                     обработка хода игрока
+//---------------------------------------------------------------------обработка хода игрока
 function make_move(idd){
 
 
@@ -168,7 +165,7 @@ function ai_make_move(){
 }
 
 
-function get_next_houses_to_put_stones(n_stones, house_index, player){  //если комп ходит, то не перескакивают камни
+function get_next_houses_to_put_stones(n_stones, house_index, player){
     let houses = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
     let forbidden_kalah = 6;
@@ -203,7 +200,7 @@ function update_board(){
 }
 
 
-//                                                                     ход компьютера
+//---------------------------------------------------------------------ход компьютера
 
 class Ai_player{
     constructor() {
@@ -227,27 +224,24 @@ class Ai_player{
         return move;
     }
     make_move_alpha_beta(){
-        this.minmax_Maximize(-Infinity, Infinity, 0 );
+        this.minmax_Maximize(-Infinity, Infinity, 0, null );
     }
-    minmax_Maximize(alpha, beta,  counter_depth ){
+    minmax_Maximize(alpha, beta,  counter_depth, move ){
         if(this.imitate_board.check_kalah_for_zero(0)){
             this.imitate_board.put_left_stones(1);
             return (this.imitate_board.get_stones(13));
         }
-        if(counter_depth === 10){
-            return this.find_approximate_value();
-        }
-        let value = -Infinity;
+        if(counter_depth === 10) return this.find_approximate_value(1,alpha,beta, move);
 
+        let value = -Infinity;
         for(let i = 7; i <= 12; i++){
             if(this.imitate_board.get_stones(i)!== 0){
                 let stones = this.imitate_board.get_stones(i);
                 this.imitate_board.make_move(this.imitate_board.get_stones(i),i,0);
 
                 let found_value;
-                if(last_move === 13) found_value = this.minmax_Maximize(alpha, beta,counter_depth+1);
-                else found_value = this.minmax_Minimize(alpha, beta,counter_depth+1);
-
+                if(last_move === 13) found_value = this.minmax_Maximize(alpha, beta,counter_depth+1, i);
+                else found_value = this.minmax_Minimize(alpha, beta,counter_depth+1, i);
                 value = Math.max(value, found_value);
 
                 if(counter_depth === 0){
@@ -266,36 +260,28 @@ class Ai_player{
                         this.kalah_move = i;
                     }
                     alpha=value;
-                }                                                                                                //придумать как сделать определение хода
+                }                                //придумать как сделать определение хода
                 //alpha = Math.max(alpha,value);
-
             }
-
         }
-
         return value;
-
     }
-    minmax_Minimize(alpha, beta, counter_depth){
+    minmax_Minimize(alpha, beta, counter_depth, move){
         if(this.imitate_board.check_kalah_for_zero(1)){
             this.imitate_board.put_left_stones(0);
             return this.imitate_board.get_stones(13);
         }
-        if(counter_depth === 10){
-            return this.find_approximate_value();
-        }
-        let value = Infinity;
+        if(counter_depth === 10) return this.find_approximate_value(0, alpha,beta, move);
 
+        let value = Infinity;
         for(let i = 0; i<= 5; i++){
             if(this.imitate_board.get_stones(i)!== 0){
                 let stones = this.imitate_board.get_stones(i);
                 this.imitate_board.make_move(stones,i,1);
 
                 let found_value;
-
-                if(last_move === 6) found_value = this.minmax_Minimize(alpha, beta,counter_depth+1);
-                else found_value = this.minmax_Maximize(alpha, beta,counter_depth+1)
-
+                if(last_move === 6) found_value = this.minmax_Minimize(alpha, beta,counter_depth+1, i);
+                else found_value = this.minmax_Maximize(alpha, beta,counter_depth+1, i)
                 value = Math.min(value, found_value);
 
                 if(this.imitate_board.player_to_undo!== null){
@@ -310,13 +296,11 @@ class Ai_player{
         return value;
     }
 
-    find_approximate_value(){
+    find_approximate_value(player, alpha, beta){
         let coef = 36/(this.imitate_board.houses[13]+this.imitate_board.houses[6]);
         return Number(this.imitate_board.houses[13]*coef);
     }
 }
-
-
 
 
 
